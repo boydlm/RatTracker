@@ -75,28 +75,29 @@ function changeGradient() {
     heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
 }
 
-// Heatmap data: 500 Points
 function getPoints() {
+    let dataPoints = []
 
-    const maxLat = 42.4573084452935
-    const minLat = 42.265772649664264
-    const minLong = -71.14029959929394
-    const maxLong = -70.9788192028027
+    fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod/rat-locations', {
+        method: 'GET'
+	})
+		.then(response => {
+			if (response.status != 200) {
+				throw new Error('unable to fetch data points');
+			}
+			console.log("successfully fetched data points")
+			return response.json()
+		})
+		.then(data => {
+			for (location in data) {
+                let newPoint = new google.maps.LatLng(location.latitude, location.longitude)
+                dataPoints.push(newPoint);
+            }
+		})
+		.catch((error) => {
+			console.log(error)
+		});
 
-    let randomDataPoints = []
-
-    //loop 500 times and create new random datapoint in that range
-
-    for (let i = 0; i < 500; i++) {
-        let lat = Math.random() * (maxLat - minLat) + minLat
-        let long = Math.random() * (maxLong - minLong) + minLong
-        let randomPoint = new google.maps.LatLng(lat, long)
-        randomDataPoints.push(randomPoint)
-    }
-
-    return randomDataPoints
-
-    //fetch real data points from DynamoDB and insert them into an array like below
+    return dataPoints
 }
-
 window.initMap = initMap;
