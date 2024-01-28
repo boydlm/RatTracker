@@ -14,7 +14,7 @@ function initMap() {
 }
 
 function addPoint(e) {
-    console.log(e);  
+    console.log(e);
     const latitude = e.latLng.toJSON()['lat']
     const longitude = e.latLng.toJSON()['lng']
 
@@ -23,27 +23,32 @@ function addPoint(e) {
 
     //Insert lat/long into DynamoDB by calling API gateway
     fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod/rat-location', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin':'*',
-        'Access-Control-Allow-Methods':'POST,GET,OPTIONS'
-    },
-    body: JSON.stringify({
-        "latitude": latitude,
-        "longitude": longitude
-        })
-    })
-   .then(response => response.json())
-   .then(response => console.log(JSON.stringify(response)))
-
-
-    const point = new google.maps.LatLng(latitude, longitude)
-    heatmap.data.push(point)
-
-  }
+        method: 'POST',
+		body: JSON.stringify({
+			"latitude": latitude,
+			"longitude": longitude
+		})
+	})
+		.then(response => {
+			if (response.status != 201) {
+				throw new Error('unable to create new data point');
+			}
+			console.log("successfully added data point")
+			return response.json()
+		})
+		.then(data => {
+			console.log("new data point: ")
+			console.log(data.latitude)
+			console.log(data.longitude)
+			// Create a new point with the lat and long from click event
+			const point = new google.maps.LatLng(data.latitude, data.longitude)
+			// Add the new point to the heatmap
+			heatmap.data.push(point)
+		})
+		.catch((error) => {
+			console.log(error)
+		});
+}
 
 function toggleHeatmap() {
     heatmap.setMap(heatmap.getMap() ? null : map);
@@ -78,18 +83,18 @@ function getPoints() {
     const minLong = -71.14029959929394
     const maxLong = -70.9788192028027
 
-    let randomDataPoints =[]
+    let randomDataPoints = []
 
     //loop 500 times and create new random datapoint in that range
 
-    for (let i=0; i < 500; i++) {
-        let lat = Math.random() * (maxLat - minLat)+ minLat
-        let long = Math.random() * (maxLong - minLong)+ minLong 
+    for (let i = 0; i < 500; i++) {
+        let lat = Math.random() * (maxLat - minLat) + minLat
+        let long = Math.random() * (maxLong - minLong) + minLong
         let randomPoint = new google.maps.LatLng(lat, long)
         randomDataPoints.push(randomPoint)
     }
 
-    return randomDataPoints 
+    return randomDataPoints
 
     //fetch real data points from DynamoDB and insert them into an array like below
 }
