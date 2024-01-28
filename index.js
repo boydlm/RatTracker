@@ -57,10 +57,10 @@ function changeGradient() {
 // Heatmap data: 500 Points
 function getPoints() {
 
-    const maxLat = 42.38183294441887
-    const minLat = 42.3342011325971
-    const minLong = -71.10324660580274
-    const maxLong = -71.02780143063184
+    const maxLat = 42.4573084452935
+    const minLat = 42.265772649664264
+    const minLong = -71.14029959929394
+    const maxLong = -70.9788192028027
 
     let randomDataPoints =[]
 
