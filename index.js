@@ -22,7 +22,7 @@ function addPoint(e) {
     console.log(longitude);
 
     //Insert lat/long into DynamoDB by calling API gateway
-    fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod', {
+    fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod/rat-location', {
     method: 'POST',
     headers: {
         'Accept': 'application/json',
