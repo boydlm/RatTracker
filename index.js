@@ -24,30 +24,30 @@ function addPoint(e) {
     //Insert lat/long into DynamoDB by calling API gateway
     fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod/rat-location', {
         method: 'POST',
-		body: JSON.stringify({
-			"latitude": latitude,
-			"longitude": longitude
-		})
-	})
-		.then(response => {
-			if (response.status != 201) {
-				throw new Error('unable to create new data point');
-			}
-			console.log("successfully added data point")
-			return response.json()
-		})
-		.then(data => {
-			console.log("new data point: ")
-			console.log(data.latitude)
-			console.log(data.longitude)
-			// Create a new point with the lat and long from click event
-			const point = new google.maps.LatLng(data.latitude, data.longitude)
-			// Add the new point to the heatmap
-			heatmap.data.push(point)
-		})
-		.catch((error) => {
-			console.log(error)
-		});
+        body: JSON.stringify({
+            "latitude": latitude,
+            "longitude": longitude
+        })
+    })
+        .then(response => {
+            if (response.status != 201) {
+                throw new Error('unable to create new data point');
+            }
+            console.log("successfully added data point")
+            return response.json()
+        })
+        .then(data => {
+            console.log("new data point: ")
+            console.log(data.latitude)
+            console.log(data.longitude)
+            // Create a new point with the lat and long from click event
+            const point = new google.maps.LatLng(data.latitude, data.longitude)
+            // Add the new point to the heatmap
+            heatmap.data.push(point)
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
 
 function toggleHeatmap() {
@@ -80,23 +80,25 @@ function getPoints() {
 
     fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod/rat-locations', {
         method: 'GET'
-	})
-		.then(response => {
-			if (response.status != 200) {
-				throw new Error('unable to fetch data points');
-			}
-			console.log("successfully fetched data points")
-			return response.json()
-		})
-		.then(data => {
-			for (location in data) {
-                let newPoint = new google.maps.LatLng(location.latitude, location.longitude)
-                dataPoints.push(newPoint);
+    })
+        .then(response => {
+            if (response.status != 200) {
+                throw new Error('unable to fetch data points');
             }
-		})
-		.catch((error) => {
-			console.log(error)
-		});
+            console.log("successfully fetched data points")
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            for (let i in data) {
+                console.log("adding data point to map: ", data[i]["latitude"], data[i]["longitude"])
+                let newPoint = new google.maps.LatLng(data[i]["latitude"], data[i]["longitude"])
+                dataPoints.push(newPoint)
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 
     return dataPoints
 }
