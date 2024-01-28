@@ -21,13 +21,28 @@ function addPoint(e) {
     console.log(latitude);
     console.log(longitude);
 
-    //Insert lat/long into DynamoDB
+    //Insert lat/long into DynamoDB by calling API gateway
+    fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*',
+        'Access-Control-Allow-Methods':'POST,GET,OPTIONS'
+    },
+    body: JSON.stringify({
+        "latitude": latitude,
+        "longitude": longitude
+        })
+    })
+   .then(response => response.json())
+   .then(response => console.log(JSON.stringify(response)))
+
 
     const point = new google.maps.LatLng(latitude, longitude)
     heatmap.data.push(point)
 
   }
-
 
 function toggleHeatmap() {
     heatmap.setMap(heatmap.getMap() ? null : map);
