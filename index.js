@@ -4,13 +4,18 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 13,
         center: { lat: 42.3601, lng: -71.0589 },
-        mapTypeId: "satellite",
+        mapTypeId: "terrain",
+    }
+    );
+    getPoints().then(points => {
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: points, 
+            map: map,
+        });
     });
-    heatmap = new google.maps.visualization.HeatmapLayer({
-        data: getPoints(),
-        map: map,
-    });
+
     map.addListener("click", addPoint);
+
 }
 
 function addPoint(e) {
@@ -21,7 +26,6 @@ function addPoint(e) {
     console.log(latitude);
     console.log(longitude);
 
-    //Insert lat/long into DynamoDB by calling API gateway
     fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod/rat-location', {
         method: 'POST',
         body: JSON.stringify({
@@ -75,7 +79,7 @@ function changeGradient() {
     heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
 }
 
-function getPoints() {
+async function getPoints() {
     let dataPoints = []
 
     fetch('https://3vmehyy0y6.execute-api.us-east-1.amazonaws.com/prod/rat-locations', {
@@ -89,6 +93,7 @@ function getPoints() {
             return response.json()
         })
         .then(data => {
+            console.log("data: ")
             console.log(data)
             for (let i in data) {
                 console.log("adding data point to map: ", data[i]["latitude"], data[i]["longitude"])
