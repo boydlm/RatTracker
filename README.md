@@ -1,3 +1,3 @@
 # RatTracker
 
-![awsinfrastructure](./images/awsrat.png)
+![awsinfrastructure](https://github.com/boydlm/Portfolio-Template/images/awsrat.png)
