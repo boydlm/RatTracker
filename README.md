@@ -1,3 +1,3 @@
 # RatTracker
 
-<img src="./images/awsrat.png" alt="awsinfrastructure" />
+![awsinfrastructure](./images/awsrat.png)
