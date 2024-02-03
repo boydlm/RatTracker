@@ -8,10 +8,10 @@ Boston RatTracker is a community driven web application that allows users to add
 AWS Amplify - a fully-managed CI/CD and hosting service. In using Amplify, any code changes the developer makes are automatically deployed. 
 
 ## API Gateway 
-AWS Gateway - the entry-point for API calls that executes functions on Lambda. 
+API Gateway - the entry-point for API calls that executes functions on Lambda. 
 
 ## Lambda
-Lambda - a serverless compute service used to query DynamoDB. 
+AWS Lambda - a serverless compute service used to query DynamoDB. 
 
 ## AWS DynamoDB 
-Dynamo DB - a fully managed, scalable, NoSQL database used to store rat sightings. 
+AWS DynamoDB - a fully managed, scalable, NoSQL database used to store rat sightings. 
