@@ -10,7 +10,7 @@ AWS Amplify - a fully-managed CI/CD and hosting service. In using Amplify, any c
 ## API Gateway 
 API Gateway - the entry-point for API calls that executes functions on Lambda. 
 
-## Lambda
+## AWS Lambda
 AWS Lambda - a serverless compute service used to query DynamoDB. 
 
 ## AWS DynamoDB 
